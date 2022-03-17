@@ -39,12 +39,16 @@ namespace Derek_Kensinger___GOL
             timer.Interval = 100; // milliseconds
             timer.Tick += Timer_Tick;
             timer.Enabled = false; // start timer running
+
+            
+            graphicsPanel1.BackColor = Properties.Settings.Default.PanelColor;
+            
         }
 
         // Calculate the next generation of cells
         private void NextGeneration()
         {
-            bool[,] temp = new bool[universe.GetLength(0), universe.GetLength(1)] ;
+            bool[,] temp = new bool[universe.GetLength(0), universe.GetLength(1)];
             // Iterate through the universe in the y, top to bottom
             for (int y = 0; y < universe.GetLength(1); y++)
             {
@@ -63,7 +67,7 @@ namespace Derek_Kensinger___GOL
                         }
                         else
                         {
-                            temp[x,y] = universe[x,y];
+                            temp[x, y] = universe[x, y];
                         }
                     }
                     else
@@ -193,7 +197,7 @@ namespace Derek_Kensinger___GOL
                     int xCheck = x + xOffset;
                     int yCheck = y + yOffset;
                     // if xOffset and yOffset are both equal to 0 then continue
-                    if (xOffset == 0 &&  yOffset == 0)
+                    if (xOffset == 0 && yOffset == 0)
                     {
                         continue;
                     }
@@ -244,7 +248,7 @@ namespace Derek_Kensinger___GOL
                     // if xCheck is less than 0 then set to xLen - 1
                     if (xCheck < 0)
                     {
-                       xCheck = xLen -1;
+                        xCheck = xLen - 1;
                     }
                     // if yCheck is less than 0 then set to yLen - 1
                     if (yCheck < 0)
@@ -295,8 +299,8 @@ namespace Derek_Kensinger___GOL
             graphicsPanel1.Invalidate();
 
             // Restart the timer
-            timer.Enabled = false; 
-            
+            timer.Enabled = false;
+
         }
 
         // The Start Button
@@ -317,22 +321,63 @@ namespace Derek_Kensinger___GOL
             NextGeneration(); // calls the next generation
         }
 
-        // Modal Dialog Box for Changing Color
+        // Modal Dialog Box for Changing Font Color
         private void colorToolStripMenuItem_Click(object sender, EventArgs e)
         {
             ColorDialog dialog = new ColorDialog();
             dialog.Color = numColor;
-            if(DialogResult.OK == dialog.ShowDialog())
+            if (DialogResult.OK == dialog.ShowDialog())
             {
                 numColor = dialog.Color;
                 graphicsPanel1.Invalidate();
             }
         }
 
+        // Toolbar Options Menu to Change Font Color
+        private void colorToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            ColorDialog dialog = new ColorDialog();
+            dialog.Color = numColor;
+            if (DialogResult.OK == dialog.ShowDialog())
+            {
+                numColor = dialog.Color;
+                graphicsPanel1.Invalidate();
+            }
+        }
+
+        // Modal Dialog Option for Changing Window Color
+        private void windowColorToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ColorDialog dlg = new ColorDialog();
+            dlg.Color = graphicsPanel1.BackColor;
+            if (DialogResult.OK == dlg.ShowDialog())
+            {
+                graphicsPanel1.BackColor = dlg.Color;
+            }
+        }
+
+        // Toolbar Option for Changing Window Color
+        private void windowColorToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            ColorDialog dlg = new ColorDialog();
+            dlg.Color = graphicsPanel1.BackColor;
+            if (DialogResult.OK == dlg.ShowDialog())
+            {
+                graphicsPanel1.BackColor = dlg.Color;
+            }
+        }
+
+        // Stores the Window Color when Closed
+        private void Form1_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            Properties.Settings.Default.PanelColor = graphicsPanel1.BackColor;
+            Properties.Settings.Default.Save();
+        }
+
         // Modal Dialog Box for Changing the Settings
         private void modalToolStripMenuItem_Click(object sender, EventArgs e)
 
-        {   
+        {
             Settings dialog = new Settings();
 
             // Change the universe height in the Settings dialog box
@@ -355,6 +400,6 @@ namespace Derek_Kensinger___GOL
             }
         }
 
-        
+
     }
 }

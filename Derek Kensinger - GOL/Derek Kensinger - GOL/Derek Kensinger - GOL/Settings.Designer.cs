@@ -78,6 +78,11 @@
             // 
             // numericUpDownMilliseconds
             // 
+            this.numericUpDownMilliseconds.Increment = new decimal(new int[] {
+            5,
+            0,
+            0,
+            0});
             this.numericUpDownMilliseconds.Location = new System.Drawing.Point(198, 129);
             this.numericUpDownMilliseconds.Maximum = new decimal(new int[] {
             500,
