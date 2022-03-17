@@ -352,7 +352,7 @@ namespace Derek_Kensinger___GOL
             dlg.Color = graphicsPanel1.BackColor;
             if (DialogResult.OK == dlg.ShowDialog())
             {
-                graphicsPanel1.BackColor = dlg.Color;
+                graphicsPanel1.BackColor = dlg.Color;              
             }
         }
 
@@ -372,6 +372,21 @@ namespace Derek_Kensinger___GOL
         {
             Properties.Settings.Default.PanelColor = graphicsPanel1.BackColor;
             Properties.Settings.Default.Save();
+        }
+
+        // Reset to Default Settings for Color
+        private void resetColorsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Properties.Settings.Default.Reset();
+            graphicsPanel1.BackColor = Properties.Settings.Default.PanelColor;
+
+        }
+
+        // Revert to the Previous Color Settings
+        private void reloadColorsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Properties.Settings.Default.Reload();
+            graphicsPanel1.BackColor = Properties.Settings.Default.PanelColor;
         }
 
         // Modal Dialog Box for Changing the Settings
@@ -400,6 +415,7 @@ namespace Derek_Kensinger___GOL
             }
         }
 
+        
 
     }
 }

@@ -61,7 +61,7 @@ namespace Derek_Kensinger___GOL.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("White")]
+        [global::System.Configuration.DefaultSettingValueAttribute("WhiteSmoke")]
         public global::System.Drawing.Color PanelColor {
             get {
                 return ((global::System.Drawing.Color)(this["PanelColor"]));
