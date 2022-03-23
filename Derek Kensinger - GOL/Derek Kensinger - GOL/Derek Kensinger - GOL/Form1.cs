@@ -12,6 +12,7 @@ namespace Derek_Kensinger___GOL
 {
     public partial class Form1 : Form
     {
+        // Two integers that are used to change the size of the universe in the Settings modal dialog box
         int widthincells
         {
             get => universe.GetLength(0);
@@ -48,7 +49,7 @@ namespace Derek_Kensinger___GOL
             timer.Tick += Timer_Tick;
             timer.Enabled = false; // start timer running
 
-            
+            //Default back color for the program
             graphicsPanel1.BackColor = Properties.Settings.Default.PanelColor;
             
         }
@@ -102,16 +103,21 @@ namespace Derek_Kensinger___GOL
             graphicsPanel1.Invalidate();
         }
 
+        // Method to Display the details of the current universe 
         public void UpdateStatusStrip() {
             int count = 0;
-            for (int x = 0; x < universe.GetLength(0); x++) {
-                for (int y = 0; y < universe.GetLength(0); y++) {
-                    if (universe[x, y] == true) {
+            for (int x = 0; x < universe.GetLength(0); x++) 
+            {
+                for (int y = 0; y < universe.GetLength(0); y++) 
+                {
+                    if (universe[x, y] == true) 
+                    {
                         count += 1;
                     }
                     //count += universe[x, y] ? 1 : 0;
                 }
             }
+
             // Update status strip generations
             toolStripStatusLabelGenerations.Text =
                 "Generations = " + generations.ToString() + " , " +
@@ -171,6 +177,7 @@ namespace Derek_Kensinger___GOL
                     {
                         count = CountNeighborsFinite(x, y);
                     }
+
                     e.Graphics.DrawString(count.ToString(), drawfont, numBrush, cellRect);
 
                     // Outline the cell with a pen
@@ -183,7 +190,7 @@ namespace Derek_Kensinger___GOL
             cellBrush.Dispose();
             numBrush.Dispose();
 
-            // Status strip displaying game specs
+            // Details of the status of the current universe
             UpdateStatusStrip();
         }
 
@@ -421,10 +428,7 @@ namespace Derek_Kensinger___GOL
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void modalToolStripMenuItem_Click(object sender, EventArgs e)
-
         {
-
-
             Settings dialog = new Settings();
 
             // Change the universe height in the Settings dialog box
@@ -438,6 +442,7 @@ namespace Derek_Kensinger___GOL
 
             if (DialogResult.OK == dialog.ShowDialog())
             {
+                // Change the size of the universe 
                 bool[,] sketch = new bool[dialog.Height, dialog.Width];
                 for (int x = 0; x < sketch.GetLength(0) && x < universe.GetLength(0); x++)
                 {
@@ -446,12 +451,18 @@ namespace Derek_Kensinger___GOL
                         sketch[x, y] = universe[x, y];
                     }
                 }
+                // Swap logic to update the universe with the new parameters for the universe size
                 universe = sketch;
+
+                // Implement that time change
                 timer.Interval = dialog.Millisecond;
+
+                //Invalidate the graphics panel
                 graphicsPanel1.Invalidate();
 
             }
         }
+
         /// <summary>
         /// Check Box to Switch between Tordial and Finite Mode
         /// </summary>
@@ -479,6 +490,11 @@ namespace Derek_Kensinger___GOL
             graphicsPanel1.Invalidate();
         }
 
+        /// <summary>
+        /// Randomize the Universe by Seed input from the User
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void randomizeSeedToolStripMenuItem_Click(object sender, EventArgs e)
         {
             FormGetNumber getNumber = new FormGetNumber();
