@@ -10,9 +10,9 @@ using System.Windows.Forms;
 
 namespace Derek_Kensinger___GOL
 {
-    public partial class FormGetNumber : Form
+    public partial class RandomizeSeed : Form
     {
-        public FormGetNumber()
+        public RandomizeSeed()
         {
             InitializeComponent();
         }

@@ -53,11 +53,11 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
-    <Compile Include="FormGetNumber.cs">
+    <Compile Include="RandomizeSeed.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="FormGetNumber.Designer.cs">
-      <DependentUpon>FormGetNumber.cs</DependentUpon>
+    <Compile Include="RandomizeSeed.Designer.cs">
+      <DependentUpon>RandomizeSeed.cs</DependentUpon>
     </Compile>
     <Compile Include="GraphicsPanel.cs">
       <SubType>Component</SubType>
@@ -73,8 +73,8 @@
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="FormGetNumber.resx">
-      <DependentUpon>FormGetNumber.cs</DependentUpon>
+    <EmbeddedResource Include="RandomizeSeed.resx">
+      <DependentUpon>RandomizeSeed.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

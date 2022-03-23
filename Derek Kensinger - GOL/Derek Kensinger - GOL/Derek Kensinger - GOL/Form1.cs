@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -16,8 +17,8 @@ namespace Derek_Kensinger___GOL
         int widthincells
         {
             get => universe.GetLength(0);
-            set => universe = new bool[value, heightincells]; 
-        } 
+            set => universe = new bool[value, heightincells];
+        }
         int heightincells
         {
             get => universe.GetLength(1);
@@ -25,7 +26,7 @@ namespace Derek_Kensinger___GOL
         }
 
         // The universe array
-        bool[,] universe = new bool[5, 5];
+        bool[,] universe = new bool[20, 20];
         // The scratchPad array
         //bool[,] scratchPad = new bool[5, 5];
 
@@ -51,7 +52,7 @@ namespace Derek_Kensinger___GOL
 
             //Default back color for the program
             graphicsPanel1.BackColor = Properties.Settings.Default.PanelColor;
-            
+
         }
 
         // Calculate the next generation of cells
@@ -65,7 +66,7 @@ namespace Derek_Kensinger___GOL
                 for (int x = 0; x < universe.GetLength(0); x++)
                 {
                     int count = CountNeighborsToroidal(x, y);
-                    if (finiteToolStripMenuItem.Checked == true)    
+                    if (finiteToolStripMenuItem.Checked == true)
                     {
                         count = CountNeighborsFinite(x, y);
                     }
@@ -104,13 +105,14 @@ namespace Derek_Kensinger___GOL
         }
 
         // Method to Display the details of the current universe 
-        public void UpdateStatusStrip() {
+        public void UpdateStatusStrip()
+        {
             int count = 0;
-            for (int x = 0; x < universe.GetLength(0); x++) 
+            for (int x = 0; x < universe.GetLength(0); x++)
             {
-                for (int y = 0; y < universe.GetLength(0); y++) 
+                for (int y = 0; y < universe.GetLength(0); y++)
                 {
-                    if (universe[x, y] == true) 
+                    if (universe[x, y] == true)
                     {
                         count += 1;
                     }
@@ -121,7 +123,7 @@ namespace Derek_Kensinger___GOL
             // Update status strip generations
             toolStripStatusLabelGenerations.Text =
                 "Generations = " + generations.ToString() + " , " +
-                "Living Cells = " + count + " , " + 
+                "Living Cells = " + count + " , " +
                 "Interval = " + timer.Interval + " ms ";
         }
 
@@ -385,7 +387,7 @@ namespace Derek_Kensinger___GOL
             dlg.Color = graphicsPanel1.BackColor;
             if (DialogResult.OK == dlg.ShowDialog())
             {
-                graphicsPanel1.BackColor = dlg.Color;              
+                graphicsPanel1.BackColor = dlg.Color;
             }
         }
 
@@ -454,7 +456,7 @@ namespace Derek_Kensinger___GOL
                 // Swap logic to update the universe with the new parameters for the universe size
                 universe = sketch;
 
-                // Implement that time change
+                // Implement the inputted time change
                 timer.Interval = dialog.Millisecond;
 
                 //Invalidate the graphics panel
@@ -483,7 +485,8 @@ namespace Derek_Kensinger___GOL
         private void randomizeTimeToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Random rando = new Random();
-            universe.ForEach((x, y) => { 
+            universe.ForEach((x, y) =>
+            {
                 universe[x, y] = rando.NextBool();
             });
 
@@ -497,17 +500,119 @@ namespace Derek_Kensinger___GOL
         /// <param name="e"></param>
         private void randomizeSeedToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            FormGetNumber getNumber = new FormGetNumber();
-            if (getNumber.ShowDialog() == DialogResult.OK)
+            RandomizeSeed seed = new RandomizeSeed();
+            if (seed.ShowDialog() == DialogResult.OK)
             {
 
-                Random rando = new Random((int)getNumber.numericUpDown1.Value);
-                universe.ForEach((x, y) => {
+                Random rando = new Random((int)seed.numericUpDown1.Value);
+                universe.ForEach((x, y) =>
+                {
                     universe[x, y] = rando.NextBool();
                 });
 
                 graphicsPanel1.Invalidate();
             }
         }
+
+        // Save As
+        private void saveAsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            SaveFileDialog dlg = new SaveFileDialog();
+            dlg.Filter = "All Files|*.*|Cells|*.cells";
+            dlg.FilterIndex = 2; dlg.DefaultExt = "cells";
+
+
+            if (DialogResult.OK == dlg.ShowDialog())
+            {
+                StreamWriter writer = new StreamWriter(dlg.FileName);
+
+                // Write any comments you want to include first.
+                // Prefix all comment strings with an exclamation point.
+                // Use WriteLine to write the strings to the file. 
+                // It appends a CRLF for you.
+                writer.WriteLine("!Your Current Universe @ " + DateTime.Now.ToString());
+                // Loops through the universe and appends to the save file the status of each cell
+                universe.ForEach((x, y) => {
+                    //writer.Write(universe[x, y] == true ? "O" : ".");
+                    if (universe[x, y] == true)
+                    {
+                        writer.Write("O");
+                    }
+                    else
+                    {
+                        writer.Write(".");
+                    }
+                    if (x == widthincells - 1)
+                    {
+                        writer.Write("\n");
+                    }
+                });
+                // After all rows and columns have been written then close the file.
+                writer.Close();
+            }
+        }
+
+        // Open
+        private void openToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog dlg = new OpenFileDialog();
+            dlg.Filter = "All Files|*.*|Cells|*.cells";
+            dlg.FilterIndex = 2;
+
+            if (DialogResult.OK == dlg.ShowDialog())
+            {
+                StreamReader reader = new StreamReader(dlg.FileName);
+
+                // holds all the data for the universe.
+                List<string> lines = new List<string>();
+
+                // Iterate through the file once to get its size.
+                while (!reader.EndOfStream)
+                {
+                    //read the current line
+                    string data = reader.ReadLine();
+
+                    // check if the line is empty or is a comment.
+                    if (data.Length == 0 || data[0] == '!') { continue; }
+
+                    // add the data to the list of data.
+                    lines.Add(data);
+                }
+                reader.Close();
+                
+                // Check if the file is valid / there is any data in the file
+                if (lines.Count == 0)
+                {
+                    return;
+                }
+
+                // Create a couple variables to calculate the width and height
+                // of the data in the file.
+                int maxWidth = lines[0].Length;
+                int maxHeight = lines.Count;
+
+                // Checking each line to find the shortest
+                lines.ForEach(s => {
+                    if (s.Length < maxWidth)
+                    {
+                        maxWidth = s.Length;
+                    }
+                });
+
+                // Resize the current universe
+                universe = new bool[maxWidth, maxHeight];
+
+                // to the width and height of the file calculated above.
+                // lines[y][x] - y is which line, each line is a string, x is our character in that string
+                universe.ForEach((x, y)=>
+                {
+                    universe[x, y] = lines[y][x] == 'O'; 
+                });
+
+                graphicsPanel1.Invalidate();
+            }
+        }
+
     }
+        
 }
