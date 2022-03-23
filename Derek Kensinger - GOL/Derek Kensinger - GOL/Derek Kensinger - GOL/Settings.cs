@@ -18,9 +18,9 @@ namespace Derek_Kensinger___GOL
         }
         public int Height
         {
-            get
+            get 
             {return (int)numericUpDownHeight.Value;}
-            set
+            set 
             { numericUpDownHeight.Value = value;}
         }
 

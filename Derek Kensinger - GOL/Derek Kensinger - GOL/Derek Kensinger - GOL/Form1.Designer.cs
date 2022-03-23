@@ -50,6 +50,9 @@
             this.windowColorToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.resetColorsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.reloadColorsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
+            this.tordialToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.finiteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.contentsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.indexToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -71,13 +74,14 @@
             this.toolStripButton3 = new System.Windows.Forms.ToolStripButton();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabelGenerations = new System.Windows.Forms.ToolStripStatusLabel();
-            this.toolStripStatusLabelLivingCells = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
-            this.toolStripStatusLabelNeighbors = new System.Windows.Forms.ToolStripStatusLabel();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.fontColorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.windowColorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.modalToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
+            this.randomizeTimeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.randomizeSeedToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.graphicsPanel1 = new Derek_Kensinger___GOL.GraphicsPanel();
             this.menuStrip1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
@@ -192,7 +196,10 @@
             // 
             this.toolsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.customizeToolStripMenuItem,
-            this.optionsToolStripMenuItem});
+            this.optionsToolStripMenuItem,
+            this.toolStripSeparator4,
+            this.randomizeTimeToolStripMenuItem,
+            this.randomizeSeedToolStripMenuItem});
             this.toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
             this.toolsToolStripMenuItem.Size = new System.Drawing.Size(46, 20);
             this.toolsToolStripMenuItem.Text = "&Tools";
@@ -200,13 +207,13 @@
             // customizeToolStripMenuItem
             // 
             this.customizeToolStripMenuItem.Name = "customizeToolStripMenuItem";
-            this.customizeToolStripMenuItem.Size = new System.Drawing.Size(130, 22);
+            this.customizeToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.customizeToolStripMenuItem.Text = "&Customize";
             // 
             // optionsToolStripMenuItem
             // 
             this.optionsToolStripMenuItem.Name = "optionsToolStripMenuItem";
-            this.optionsToolStripMenuItem.Size = new System.Drawing.Size(130, 22);
+            this.optionsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.optionsToolStripMenuItem.Text = "&Options";
             // 
             // toolStripMenuItemOptions
@@ -215,7 +222,10 @@
             this.colorToolStripMenuItem1,
             this.windowColorToolStripMenuItem1,
             this.resetColorsToolStripMenuItem,
-            this.reloadColorsToolStripMenuItem});
+            this.reloadColorsToolStripMenuItem,
+            this.toolStripSeparator3,
+            this.tordialToolStripMenuItem,
+            this.finiteToolStripMenuItem});
             this.toolStripMenuItemOptions.Name = "toolStripMenuItemOptions";
             this.toolStripMenuItemOptions.Size = new System.Drawing.Size(61, 20);
             this.toolStripMenuItemOptions.Text = "Options";
@@ -247,6 +257,27 @@
             this.reloadColorsToolStripMenuItem.Size = new System.Drawing.Size(195, 22);
             this.reloadColorsToolStripMenuItem.Text = "Reload Previous Colors";
             this.reloadColorsToolStripMenuItem.Click += new System.EventHandler(this.reloadColorsToolStripMenuItem_Click);
+            // 
+            // toolStripSeparator3
+            // 
+            this.toolStripSeparator3.Name = "toolStripSeparator3";
+            this.toolStripSeparator3.Size = new System.Drawing.Size(192, 6);
+            // 
+            // tordialToolStripMenuItem
+            // 
+            this.tordialToolStripMenuItem.Checked = true;
+            this.tordialToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.tordialToolStripMenuItem.Name = "tordialToolStripMenuItem";
+            this.tordialToolStripMenuItem.Size = new System.Drawing.Size(195, 22);
+            this.tordialToolStripMenuItem.Text = "Tordial";
+            this.tordialToolStripMenuItem.Click += new System.EventHandler(this.tordialToolStripMenuItem_Click);
+            // 
+            // finiteToolStripMenuItem
+            // 
+            this.finiteToolStripMenuItem.Name = "finiteToolStripMenuItem";
+            this.finiteToolStripMenuItem.Size = new System.Drawing.Size(195, 22);
+            this.finiteToolStripMenuItem.Text = "Finite";
+            this.finiteToolStripMenuItem.Click += new System.EventHandler(this.tordialToolStripMenuItem_Click);
             // 
             // helpToolStripMenuItem
             // 
@@ -418,9 +449,7 @@
             // 
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripStatusLabelGenerations,
-            this.toolStripStatusLabelLivingCells,
-            this.toolStripStatusLabel1,
-            this.toolStripStatusLabelNeighbors});
+            this.toolStripStatusLabel1});
             this.statusStrip1.Location = new System.Drawing.Point(0, 323);
             this.statusStrip1.Name = "statusStrip1";
             this.statusStrip1.Size = new System.Drawing.Size(573, 22);
@@ -433,22 +462,10 @@
             this.toolStripStatusLabelGenerations.Size = new System.Drawing.Size(90, 17);
             this.toolStripStatusLabelGenerations.Text = "Generations = 0";
             // 
-            // toolStripStatusLabelLivingCells
-            // 
-            this.toolStripStatusLabelLivingCells.Name = "toolStripStatusLabelLivingCells";
-            this.toolStripStatusLabelLivingCells.Size = new System.Drawing.Size(87, 17);
-            this.toolStripStatusLabelLivingCells.Text = "Living Cells = 0";
-            // 
             // toolStripStatusLabel1
             // 
             this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
             this.toolStripStatusLabel1.Size = new System.Drawing.Size(0, 17);
-            // 
-            // toolStripStatusLabelNeighbors
-            // 
-            this.toolStripStatusLabelNeighbors.Name = "toolStripStatusLabelNeighbors";
-            this.toolStripStatusLabelNeighbors.Size = new System.Drawing.Size(113, 17);
-            this.toolStripStatusLabelNeighbors.Text = "Neighbor Count = 0";
             // 
             // contextMenuStrip1
             // 
@@ -479,6 +496,25 @@
             this.modalToolStripMenuItem.Size = new System.Drawing.Size(131, 22);
             this.modalToolStripMenuItem.Text = "Settings";
             this.modalToolStripMenuItem.Click += new System.EventHandler(this.modalToolStripMenuItem_Click);
+            // 
+            // toolStripSeparator4
+            // 
+            this.toolStripSeparator4.Name = "toolStripSeparator4";
+            this.toolStripSeparator4.Size = new System.Drawing.Size(177, 6);
+            // 
+            // randomizeTimeToolStripMenuItem
+            // 
+            this.randomizeTimeToolStripMenuItem.Name = "randomizeTimeToolStripMenuItem";
+            this.randomizeTimeToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.randomizeTimeToolStripMenuItem.Text = "Randomize - Time";
+            this.randomizeTimeToolStripMenuItem.Click += new System.EventHandler(this.randomizeTimeToolStripMenuItem_Click);
+            // 
+            // randomizeSeedToolStripMenuItem
+            // 
+            this.randomizeSeedToolStripMenuItem.Name = "randomizeSeedToolStripMenuItem";
+            this.randomizeSeedToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.randomizeSeedToolStripMenuItem.Text = "Randomize - Seed";
+            this.randomizeSeedToolStripMenuItem.Click += new System.EventHandler(this.randomizeSeedToolStripMenuItem_Click);
             // 
             // graphicsPanel1
             // 
@@ -559,15 +595,19 @@
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
         private System.Windows.Forms.ToolStripMenuItem fontColorToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem modalToolStripMenuItem;
-        private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabelLivingCells;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel1;
-        private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabelNeighbors;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemOptions;
         private System.Windows.Forms.ToolStripMenuItem colorToolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem windowColorToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem windowColorToolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem resetColorsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem reloadColorsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
+        private System.Windows.Forms.ToolStripMenuItem tordialToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem finiteToolStripMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
+        private System.Windows.Forms.ToolStripMenuItem randomizeTimeToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem randomizeSeedToolStripMenuItem;
     }
 }
 

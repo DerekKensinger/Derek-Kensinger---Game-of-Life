@@ -12,11 +12,19 @@ namespace Derek_Kensinger___GOL
 {
     public partial class Form1 : Form
     {
-        static int widthincells = 20;
-        static int heightincells = 20;
+        int widthincells
+        {
+            get => universe.GetLength(0);
+            set => universe = new bool[value, heightincells]; 
+        } 
+        int heightincells
+        {
+            get => universe.GetLength(1);
+            set => universe = new bool[widthincells, value];
+        }
 
         // The universe array
-        bool[,] universe = new bool[widthincells, heightincells];
+        bool[,] universe = new bool[5, 5];
         // The scratchPad array
         //bool[,] scratchPad = new bool[5, 5];
 
@@ -55,9 +63,11 @@ namespace Derek_Kensinger___GOL
                 // Iterate through the universe in the x, left to right
                 for (int x = 0; x < universe.GetLength(0); x++)
                 {
-                    //int count = CountNeighborsFinite(x, y);        // Need to set up dialog box or drop-down to pick between these two in the program
                     int count = CountNeighborsToroidal(x, y);
-
+                    if (finiteToolStripMenuItem.Checked == true)    
+                    {
+                        count = CountNeighborsFinite(x, y);
+                    }
                     //Apply the rules
                     if (count > 1 && count < 4)
                     {
@@ -88,11 +98,25 @@ namespace Derek_Kensinger___GOL
             // Increment generation count
             generations++;
 
-            // Update status strip generations
-            toolStripStatusLabelGenerations.Text = "Generations = " + generations.ToString();
-
             // Tell Windows you need to repaint
             graphicsPanel1.Invalidate();
+        }
+
+        public void UpdateStatusStrip() {
+            int count = 0;
+            for (int x = 0; x < universe.GetLength(0); x++) {
+                for (int y = 0; y < universe.GetLength(0); y++) {
+                    if (universe[x, y] == true) {
+                        count += 1;
+                    }
+                    //count += universe[x, y] ? 1 : 0;
+                }
+            }
+            // Update status strip generations
+            toolStripStatusLabelGenerations.Text =
+                "Generations = " + generations.ToString() + " , " +
+                "Living Cells = " + count + " , " + 
+                "Interval = " + timer.Interval + " ms ";
         }
 
         // The event called by the timer every Interval milliseconds.
@@ -113,6 +137,9 @@ namespace Derek_Kensinger___GOL
 
             // A Pen for drawing the grid lines (color, width)
             Pen gridPen = new Pen(gridColor, 1);
+
+            // Creating a Font for Cells
+            Font drawfont = new Font(FontFamily.GenericSerif, cellWidth / 4.0f);
 
             // A Brush for filling living cells interiors (color)
             Brush cellBrush = new SolidBrush(cellColor);
@@ -137,18 +164,14 @@ namespace Derek_Kensinger___GOL
                     // Fill the cell with a brush if alive
                     if (universe[x, y] == true)
                     {
-                        e.Graphics.FillRectangle(cellBrush, cellRect);// This needs to stay
-
-                        // Writing numbers to each cell???
-                        StringFormat stringFormat = new StringFormat();
-                        stringFormat.Alignment = StringAlignment.Center;
-                        stringFormat.LineAlignment = StringAlignment.Center;
-
-                        Rectangle rect = new Rectangle(0, 0, 100, 100);
-                        int neighbors = 8;
-
-                        e.Graphics.DrawString(neighbors.ToString(), graphicsPanel1.Font, numBrush, new PointF(x, y));
+                        e.Graphics.FillRectangle(cellBrush, cellRect);
                     }
+                    int count = CountNeighborsToroidal(x, y);
+                    if (finiteToolStripMenuItem.Checked == true)
+                    {
+                        count = CountNeighborsFinite(x, y);
+                    }
+                    e.Graphics.DrawString(count.ToString(), drawfont, numBrush, cellRect);
 
                     // Outline the cell with a pen
                     e.Graphics.DrawRectangle(gridPen, cellRect.X, cellRect.Y, cellRect.Width, cellRect.Height);
@@ -159,6 +182,9 @@ namespace Derek_Kensinger___GOL
             gridPen.Dispose();
             cellBrush.Dispose();
             numBrush.Dispose();
+
+            // Status strip displaying game specs
+            UpdateStatusStrip();
         }
 
         private void graphicsPanel1_MouseClick(object sender, MouseEventArgs e)
@@ -389,10 +415,16 @@ namespace Derek_Kensinger___GOL
             graphicsPanel1.BackColor = Properties.Settings.Default.PanelColor;
         }
 
-        // Modal Dialog Box for Changing the Settings
+        /// <summary>
+        /// Modal Dialog Box for Changing the Settings
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void modalToolStripMenuItem_Click(object sender, EventArgs e)
 
         {
+
+
             Settings dialog = new Settings();
 
             // Change the universe height in the Settings dialog box
@@ -406,16 +438,60 @@ namespace Derek_Kensinger___GOL
 
             if (DialogResult.OK == dialog.ShowDialog())
             {
-                heightincells = dialog.Height;
-                widthincells = dialog.Width;
+                bool[,] sketch = new bool[dialog.Height, dialog.Width];
+                for (int x = 0; x < sketch.GetLength(0) && x < universe.GetLength(0); x++)
+                {
+                    for (int y = 0; y < sketch.GetLength(1) && y < universe.GetLength(1); y++)
+                    {
+                        sketch[x, y] = universe[x, y];
+                    }
+                }
+                universe = sketch;
                 timer.Interval = dialog.Millisecond;
-
                 graphicsPanel1.Invalidate();
 
             }
         }
+        /// <summary>
+        /// Check Box to Switch between Tordial and Finite Mode
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void tordialToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            finiteToolStripMenuItem.Checked = false;
+            tordialToolStripMenuItem.Checked = false;
+            ((ToolStripMenuItem)sender).Checked = true;
+        }
 
-        
+        /// <summary>
+        /// Randomize the Universe by the Current Time
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void randomizeTimeToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Random rando = new Random();
+            universe.ForEach((x, y) => { 
+                universe[x, y] = rando.NextBool();
+            });
 
+            graphicsPanel1.Invalidate();
+        }
+
+        private void randomizeSeedToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            FormGetNumber getNumber = new FormGetNumber();
+            if (getNumber.ShowDialog() == DialogResult.OK)
+            {
+
+                Random rando = new Random((int)getNumber.numericUpDown1.Value);
+                universe.ForEach((x, y) => {
+                    universe[x, y] = rando.NextBool();
+                });
+
+                graphicsPanel1.Invalidate();
+            }
+        }
     }
 }
