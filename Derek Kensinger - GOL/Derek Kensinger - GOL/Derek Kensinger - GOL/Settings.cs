@@ -16,6 +16,7 @@ namespace Derek_Kensinger___GOL
         {
             InitializeComponent();
         }
+        // Property for Height.
         public int Height
         {
             get 
@@ -24,6 +25,7 @@ namespace Derek_Kensinger___GOL
             { numericUpDownHeight.Value = value;}
         }
 
+        // Property for Width.
         public int Width
         {
             get
@@ -32,6 +34,7 @@ namespace Derek_Kensinger___GOL
             {numericUpDownWidth.Value = value;}
         }
 
+        // Property for Millisecond.
         public int Millisecond
         {
             get
