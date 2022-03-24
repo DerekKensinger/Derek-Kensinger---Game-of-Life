@@ -13,7 +13,7 @@ namespace Derek_Kensinger___GOL
 {
     public partial class Form1 : Form
     {
-        // Two integers that are used to change the size of the universe in the Settings modal dialog box.
+        // Two integers that are used to change the size of the universe instead of using hard coded numnbers.
         int widthincells
         {
             get
